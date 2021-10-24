@@ -5,9 +5,9 @@ import (
 	"crypto/cipher"
 	"crypto/md5"
 	"crypto/rc4"
-	"strconv"
-
+	C "github.com/aead/chacha20"
 	"golang.org/x/crypto/chacha20"
+	"strconv"
 )
 
 // Cipher generates a pair of stream ciphers for encryption and decryption.
@@ -107,17 +107,18 @@ func RC4MD5(key []byte) (Cipher, error) {
 // CHACHA20
 type chacha20key []byte
 func (k chacha20key) IVSize() int  {
-	return chacha20.KeySize
+	return 12
 }
 func (k chacha20key) Decrypter(iv []byte) cipher.Stream {
 	return k.Encrypter(iv)
 }
 func (k chacha20key) Encrypter(iv []byte) cipher.Stream {
-	ciph, err := chacha20.NewUnauthenticatedCipher(k, iv)
+	ciph, err := C.NewCipher(iv,k)
 	if err != nil {
 		panic(err) // should never happen
 	}
-	return ciph}
+	return ciph
+}
 func NewChacha20(key []byte) (Cipher, error) {
 	if len(key) != chacha20.KeySize {
 		return nil, KeySizeError(chacha20.KeySize)

@@ -107,7 +107,7 @@ func RC4MD5(key []byte) (Cipher, error) {
 // CHACHA20
 type chacha20key []byte
 func (k chacha20key) IVSize() int  {
-	return 12
+	return 8 // The original ChaCha20 designed by Bernstein.
 }
 func (k chacha20key) Decrypter(iv []byte) cipher.Stream {
 	return k.Encrypter(iv)

@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/kooroshh/go-shadowsocks2/core"
+	"github.com/doorbash/go-shadowsocks2/core"
 )
 
 var config struct {
